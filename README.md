@@ -1,4 +1,4 @@
-# zsh-explain-autofix 🛠️✨
+# 🛠️✨ zsh-explain-autofix
 
 🚨💡 **Alt+E error diagnostic & auto-fix injector for zsh**
 
@@ -6,7 +6,7 @@ Captures a failed command's stderr + exit code, generates an instant inline expl
 
 ---
 
-## Features 🌟
+## 🌟 Features
 
 - ⌨️📝 **`Alt+E`** after any failed command → explanation + suggested fix in your buffer
 - 🐙📦📦🐳🔐⚙️🦀📦 **Local pattern rules** for git, pacman, apt, docker, ssh, systemctl, cargo, npm — fast, no network
@@ -19,7 +19,7 @@ Captures a failed command's stderr + exit code, generates an instant inline expl
 
 ---
 
-## Install 📦
+## 📦 Install
 
 ### One-liner (curl)
 
@@ -38,7 +38,7 @@ source /home/raven/Devspace/Cybercore/tooling/zsh-explain-autofix/explain-autofi
 🎯 Then press **`Alt+E`** after a command fails.
 ---
 
-## Configuration ⚙️
+## ⚙️ Configuration
 
 Set these in `~/.zshrc` **before** sourcing the plugin:
 
@@ -72,7 +72,7 @@ export ZEA_KEY_BIND='^[e'
 
 ---
 
-## Usage 📖
+## 📖 Usage
 
 ```zsh
 $ git pushe
@@ -91,7 +91,7 @@ $ git push                            # 💉 fix injected into buffer
 
 ---
 
-## Custom Rules 🎨
+## 🎨 Custom Rules
 
 Create a rules file and set `ZEA_USER_RULES` to its path. The file should define a function `_zea_user_rule_match()` that takes 5 name-reference args:
 
@@ -111,7 +111,7 @@ _zea_user_rule_match() {
 
 ---
 
-## Omarchy Bar Integration 📊
+## 📊 Omarchy Bar Integration
 
 Set `ZEA_BAR_INDICATOR` to a script path. The plugin will write a failure flag file that your bar widget can read to show a "⚠" indicator when the last command failed.
 
@@ -124,7 +124,7 @@ fi
 
 ---
 
-## License 📄
+## 📄 License
 
 MIT
 
