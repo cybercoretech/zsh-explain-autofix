@@ -1,0 +1,33 @@
+# Example custom rules for zsh-explain-autofix
+# Save as rules/user.conf and set ZEA_USER_RULES in ~/.zshrc to its path.
+#
+# The function receives 5 name-reference args:
+#   _cmd   command string
+#   _code  exit code
+#   _stderr stderr text
+#   _expl  explanation output (set this)
+#   _fix   suggested fix output (set this, or leave empty)
+#
+# Return 0 if a rule matched, 1 otherwise.
+
+_zea_user_rule_match() {
+    local -n _cmd=$1 _code=$2 _stderr=$3 _expl=$4 _fix=$5
+    _expl=""
+    _fix=""
+
+    # Example: custom proprietary tool
+    if [[ "$_cmd" == mytool* ]] && [[ "$_stderr" == *"auth expired"* ]]; then
+        _expl="Your mytool authentication token has expired."
+        _fix="mytool login --refresh"
+        return 0
+    fi
+
+    # Example: kubectl context error
+    if [[ "$_cmd" == kubectl* ]] && [[ "$_stderr" == *"connection refused"* ]]; then
+        _expl="kubectl cannot reach the API server — check your cluster/context."
+        _fix="kubectl config current-context && kubectl cluster-info"
+        return 0
+    fi
+
+    return 1
+}
