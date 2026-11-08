@@ -281,7 +281,7 @@ _zea_rule_match() {
         elif [[ "$e" == *"undefined reference"* ]]; then
             _expl="Linker error — missing library or object file."
             _fix=""
-        elif [[ "$e" == *"expected ';'"* ]] || [[ "$e" == *"expected '"'"]] ]]; then
+        elif [[ "$e" == *"expected ';'"* ]] || [[ "$e" == *"expected quote"* ]]; then
             _expl="Syntax error in source code — check the line indicated."
             _fix=""
         fi
@@ -393,8 +393,15 @@ _zea_llm_explain() {
     local base_url="${ZEA_LLM_BASE_URL:-https://api.openai.com/v1}"
     local model="${ZEA_LLM_MODEL:-gpt-4o-mini}"
 
+    # Build JSON payload via heredoc to avoid nested quoting issues
     local payload
-    payload=$(python3 -c "import json,sys; print(json.dumps({'model': sys.argv[1], 'messages': [{'role': 'user', 'content': f'''You are a command-line error explainer. Given a failed shell command, its exit code, and stderr, respond ONLY with valid JSON: {{\"explanation\": \"one sentence\", \"fix\": \"suggested command or empty string\"}}. Command: {sys.argv[2]} Exit code: {sys.argv[3]} Stderr: {sys.argv[4]}'''}], 'temperature': 0.2})" "$model" "$cmd" "$code" "$stderr" 2>/dev/null)
+    payload=$(python3 - "$model" "$cmd" "$code" "$stderr" <<'PYEOF'
+import json, sys
+model, cmd, code, stderr = sys.argv[1:5]
+content = f'''You are a command-line error explainer. Given a failed shell command, its exit code, and stderr, respond ONLY with valid JSON: {{"explanation": "one sentence", "fix": "suggested command or empty string"}}. Command: {cmd} Exit code: {code} Stderr: {stderr}'''
+print(json.dumps({"model": model, "messages": [{"role": "user", "content": content}], "temperature": 0.2}))
+PYEOF
+)
 
     local response
     response=$(curl -s --max-time 15 -X POST "$base_url/chat/completions" \
