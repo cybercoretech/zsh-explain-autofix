@@ -2,20 +2,20 @@
 
 **Alt+E error diagnostic & auto-fix injector for zsh** 🚨💡
 
-Captures a failed command's stderr + exit code, generates an instant inline
-explanation, and injects a suggested fix into your command buffer — all with
-a single keypress. Never auto-executes; safe by default.
+Captures a failed command's stderr + exit code, generates an instant inline explanation, and injects a suggested fix into your command buffer — all with a single keypress. Never auto-executes; safe by default.
 
 ---
 
 ## Features 🌟
 
 - **`Alt+E`** after any failed command → explanation + suggested fix in your buffer ⌨️📝
-- **Local pattern rules** for git, pacman, apt, docker, ssh, systemctl, cargo, npm — fast, no network 🐙📦📦🐳🔐⚙️🦀📦
+- **Local pattern rules** for git 🐙, pacman 📦, apt 📦, docker 🐳, ssh 🔐, systemctl ⚙️, cargo 🦀, npm 📦 — fast, no network
 - **Optional LLM fallback** via OpenAI-compatible API for unmatched errors 🤖🌐
 - **User-custom rules** via `ZEA_USER_RULES` config file 🎨
+- **Fix confirmation prompt** before injecting — opt out with `ZEA_CONFIRM=0` ✅❌
 - **Stderr capture** via `preexec`/`precmd` hooks 🪝
 - **Buffer injection** — fix appears in your command line, ready to edit or execute 💉✏️
+- **Omarchy bar integration** — shows "⚠ last command failed" indicator 📊
 
 ---
 
@@ -51,7 +51,9 @@ Set these in `~/.zshrc` **before** sourcing the plugin:
 | `ZEA_LLM_MODEL` | `gpt-4o-mini` | LLM model 🧠 |
 | `ZEA_AUTO_CLEAR` | `1` | Clear failure state after `Alt+E` 🧹 |
 | `ZEA_KEY_BIND` | `'\eE'` (Alt+E) | Custom key sequence ⌨️ |
+| `ZEA_CONFIRM` | `1` | Ask before injecting fix ✅❌ |
 | `ZEA_USER_RULES` | _(unset)_ | Path to your custom rules file 📜 |
+| `ZEA_BAR_INDICATOR` | _(unset)_ | Path to Omarchy bar indicator script 📊 |
 
 ### Example `.zshrc` snippet
 
@@ -61,6 +63,9 @@ source /home/raven/Devspace/Cybercore/tooling/zsh-explain-autofix/explain-autofi
 # Optional: enable LLM backend for unmatched errors
 export ZEA_LLM_API_KEY="sk-..."
 export ZEA_LLM_MODEL="gpt-4o-mini"
+
+# Optional: skip confirmation, inject fix directly
+export ZEA_CONFIRM=0
 
 # Optional: custom key binding
 export ZEA_KEY_BIND='^[e'
@@ -80,6 +85,7 @@ Command: git pushe
 Stderr: fatal: 'pushe' is not a git command...
 Explanation: That git subcommand doesn't exist. Did you mean 'push'?
 Suggested fix: git push
+Apply fix? (y/n): y                  # confirmation prompt ✅
 $ git push                            # fix injected into buffer 💉
 # press Enter to run, or edit first ▶️
 ```
@@ -88,8 +94,7 @@ $ git push                            # fix injected into buffer 💉
 
 ## Custom Rules 🎨
 
-Create a rules file and set `ZEA_USER_RULES` to its path. The file should define a
-function `_zea_user_rule_match()` that takes 5 name-reference args:
+Create a rules file and set `ZEA_USER_RULES` to its path. The file should define a function `_zea_user_rule_match()` that takes 5 name-reference args:
 
 ```zsh
 _zea_user_rule_match() {
@@ -103,6 +108,19 @@ _zea_user_rule_match() {
     fi
     return 1
 }
+```
+
+---
+
+## Omarchy Bar Integration 📊
+
+Set `ZEA_BAR_INDICATOR` to a script path. The plugin will write a failure flag file that your bar widget can read to show a "⚠" indicator when the last command failed.
+
+Example bar widget check:
+```zsh
+if [[ -f "${XDG_CACHE_HOME:-$HOME/.cache}/zsh-explain-autofix/last-failure.json" ]]; then
+    echo "⚠"
+fi
 ```
 
 ---
