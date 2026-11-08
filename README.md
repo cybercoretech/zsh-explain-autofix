@@ -1,6 +1,6 @@
 # zsh-explain-autofix 🛠️✨
 
-**Alt+E error diagnostic & auto-fix injector for zsh** 🚨💡
+🚨💡 **Alt+E error diagnostic & auto-fix injector for zsh**
 
 Captures a failed command's stderr + exit code, generates an instant inline explanation, and injects a suggested fix into your command buffer — all with a single keypress. Never auto-executes; safe by default.
 
@@ -35,7 +35,7 @@ Add to your `~/.zshrc`:
 source /home/raven/Devspace/Cybercore/tooling/zsh-explain-autofix/explain-autofix.zsh
 ```
 
-Then press **`Alt+E`** after a command fails. 🎯
+🎯 Then press **`Alt+E`** after a command fails.
 ---
 
 ## Configuration ⚙️
