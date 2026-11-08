@@ -1,21 +1,25 @@
-# zsh-explain-autofix
+# zsh-explain-autofix 🛠️✨
 
-**Alt+E error diagnostic & auto-fix injector for zsh**
+**Alt+E error diagnostic & auto-fix injector for zsh** 🚨💡
 
 Captures a failed command's stderr + exit code, generates an instant inline
 explanation, and injects a suggested fix into your command buffer — all with
 a single keypress. Never auto-executes; safe by default.
 
-## Features
+---
 
-- **`Alt+E`** after any failed command → explanation + suggested fix in your buffer
-- **Local pattern rules** for git, pacman, apt, docker, ssh, systemctl, cargo, npm — fast, no network
-- **Optional LLM fallback** via OpenAI-compatible API for unmatched errors
-- **User-custom rules** via `ZEA_USER_RULES` config file
-- **Stderr capture** via `preexec`/`precmd` hooks
-- **Buffer injection** — fix appears in your command line, ready to edit or execute
+## Features 🌟
 
-## Install
+- **`Alt+E`** after any failed command → explanation + suggested fix in your buffer ⌨️📝
+- **Local pattern rules** for git, pacman, apt, docker, ssh, systemctl, cargo, npm — fast, no network 🐙📦📦🐳🔐⚙️🦀📦
+- **Optional LLM fallback** via OpenAI-compatible API for unmatched errors 🤖🌐
+- **User-custom rules** via `ZEA_USER_RULES` config file 🎨
+- **Stderr capture** via `preexec`/`precmd` hooks 🪝
+- **Buffer injection** — fix appears in your command line, ready to edit or execute 💉✏️
+
+---
+
+## Install 📦
 
 ### One-liner (curl)
 
@@ -31,21 +35,23 @@ Add to your `~/.zshrc`:
 source /home/raven/Devspace/Cybercore/tooling/zsh-explain-autofix/explain-autofix.zsh
 ```
 
-Then press **`Alt+E`** after a command fails.
+Then press **`Alt+E`** after a command fails. 🎯
 
-## Configuration
+---
+
+## Configuration ⚙️
 
 Set these in `~/.zshrc` **before** sourcing the plugin:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `ZEA_STATE_DIR` | `${XDG_CACHE_HOME:-$HOME/.cache}/zsh-explain-autofix` | State file directory |
-| `ZEA_LLM_API_KEY` | _(unset)_ | OpenAI-compatible API key (optional LLM fallback) |
-| `ZEA_LLM_BASE_URL` | `https://api.openai.com/v1` | LLM base URL |
-| `ZEA_LLM_MODEL` | `gpt-4o-mini` | LLM model |
-| `ZEA_AUTO_CLEAR` | `1` | Clear failure state after `Alt+E` |
-| `ZEA_KEY_BIND` | `'\eE'` (Alt+E) | Custom key sequence |
-| `ZEA_USER_RULES` | _(unset)_ | Path to your custom rules file |
+| `ZEA_STATE_DIR` | `${XDG_CACHE_HOME:-$HOME/.cache}/zsh-explain-autofix` | State file directory 📁 |
+| `ZEA_LLM_API_KEY` | _(unset)_ | OpenAI-compatible API key (optional LLM fallback) 🔑 |
+| `ZEA_LLM_BASE_URL` | `https://api.openai.com/v1` | LLM base URL 🌐 |
+| `ZEA_LLM_MODEL` | `gpt-4o-mini` | LLM model 🧠 |
+| `ZEA_AUTO_CLEAR` | `1` | Clear failure state after `Alt+E` 🧹 |
+| `ZEA_KEY_BIND` | `'\eE'` (Alt+E) | Custom key sequence ⌨️ |
+| `ZEA_USER_RULES` | _(unset)_ | Path to your custom rules file 📜 |
 
 ### Example `.zshrc` snippet
 
@@ -60,23 +66,27 @@ export ZEA_LLM_MODEL="gpt-4o-mini"
 export ZEA_KEY_BIND='^[e'
 ```
 
-## Usage
+---
+
+## Usage 📖
 
 ```zsh
 $ git pushe
 fatal: 'pushe' is not a git command. See 'git --help'.
 
-$                                    # press Alt+E
+$                                    # press Alt+E ⌨️
 %YELLOW%Command Failed (exit 128)%RESET%
 Command: git pushe
 Stderr: fatal: 'pushe' is not a git command...
 Explanation: That git subcommand doesn't exist. Did you mean 'push'?
 Suggested fix: git push
-$ git push                            # fix injected into buffer
-# press Enter to run, or edit first
+$ git push                            # fix injected into buffer 💉
+# press Enter to run, or edit first ▶️
 ```
 
-## Custom Rules
+---
+
+## Custom Rules 🎨
 
 Create a rules file and set `ZEA_USER_RULES` to its path. The file should define a
 function `_zea_user_rule_match()` that takes 5 name-reference args:
@@ -95,6 +105,14 @@ _zea_user_rule_match() {
 }
 ```
 
-## License
+---
+
+## License 📄
 
 MIT
+
+---
+
+<p align="center">
+  Made with ❤️ for zsh power users
+</p>
